@@ -1,38 +1,62 @@
-document.getElementById('year').textContent = new Date().getFullYear();
+// Set current year in footer
+const yearEl = document.getElementById('year');
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
 
 /* Header scroll state */
 const header = document.getElementById('header');
-window.addEventListener('scroll', () => {
-  header.classList.toggle('scrolled', window.scrollY > 30);
-});
+if (header) {
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 30);
+  });
+}
 
 /* Mobile nav toggle */
 const navToggle = document.getElementById('nav-toggle');
 const mainNav = document.getElementById('main-nav');
-navToggle.addEventListener('click', () => {
-  mainNav.classList.toggle('open');
-});
-mainNav.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => mainNav.classList.remove('open'));
-});
+if (navToggle && mainNav) {
+  navToggle.addEventListener('click', () => {
+    mainNav.classList.toggle('open');
+  });
+  mainNav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => mainNav.classList.remove('open'));
+  });
+}
+
+/* Hero Slider Logic */
+const sliderEl = document.getElementById('hero-slider');
+if (sliderEl) {
+  const slides = sliderEl.querySelectorAll('.slide');
+  if (slides.length > 0) {
+    let currentSlide = 0;
+    setInterval(() => {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }, 3500); // Swap every 3.5 seconds
+  }
+}
 
 /* Partner logos marquee */
 const partnerFiles = Array.from({ length: 13 }, (_, i) => `images/Tiravtomivka-partner-${i + 1}.png`);
 const track = document.getElementById('partners-track');
-function buildPartnerSet() {
-  const inner = document.createElement('div');
-  inner.className = 'track-inner';
-  partnerFiles.forEach(src => {
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = 'Партньор на Автомивка Блясък';
-    img.loading = 'lazy';
-    inner.appendChild(img);
-  });
-  return inner;
+if (track) {
+  function buildPartnerSet() {
+    const inner = document.createElement('div');
+    inner.className = 'track-inner';
+    partnerFiles.forEach(src => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = 'Партньор на Автомивка Блясък';
+      img.loading = 'lazy';
+      inner.appendChild(img);
+    });
+    return inner;
+  }
+  track.appendChild(buildPartnerSet());
+  track.appendChild(buildPartnerSet());
 }
-track.appendChild(buildPartnerSet());
-track.appendChild(buildPartnerSet());
 
 /* Gallery */
 const galleryFiles = [
@@ -61,37 +85,41 @@ const galleryFiles = [
   'avtomivka-blqsak-gorublyane-sofia-tir-232.jpg',
 ];
 const galleryGrid = document.getElementById('gallery-grid');
-galleryFiles.forEach((file, i) => {
-  const img = document.createElement('img');
-  img.src = `images/${file}`;
-  img.alt = 'Автомивка Блясък — снимка от обекта';
-  img.loading = 'lazy';
-  if (i % 7 === 0) img.classList.add('g-wide');
-  galleryGrid.appendChild(img);
-});
+if (galleryGrid) {
+  galleryFiles.forEach((file, i) => {
+    const img = document.createElement('img');
+    img.src = `images/${file}`;
+    img.alt = 'Автомивка Блясък — снимка от обекта';
+    img.loading = 'lazy';
+    if (i % 7 === 0) img.classList.add('g-wide');
+    galleryGrid.appendChild(img);
+  });
 
-/* Lightbox */
-const lightbox = document.createElement('div');
-lightbox.className = 'lightbox';
-lightbox.innerHTML = '<button class="lightbox-close" aria-label="Затвори">&times;</button><img src="" alt="">';
-document.body.appendChild(lightbox);
-const lightboxImg = lightbox.querySelector('img');
+  /* Lightbox */
+  const lightbox = document.createElement('div');
+  lightbox.className = 'lightbox';
+  lightbox.innerHTML = '<button class="lightbox-close" aria-label="Затвори">&times;</button><img src="" alt="">';
+  document.body.appendChild(lightbox);
+  const lightboxImg = lightbox.querySelector('img');
 
-galleryGrid.addEventListener('click', (e) => {
-  if (e.target.tagName === 'IMG') {
-    lightboxImg.src = e.target.src;
-    lightbox.classList.add('active');
-  }
-});
-lightbox.addEventListener('click', (e) => {
-  if (e.target !== lightboxImg) lightbox.classList.remove('active');
-});
+  galleryGrid.addEventListener('click', (e) => {
+    if (e.target.tagName === 'IMG') {
+      lightboxImg.src = e.target.src;
+      lightbox.classList.add('active');
+    }
+  });
+  lightbox.addEventListener('click', (e) => {
+    if (e.target !== lightboxImg) lightbox.classList.remove('active');
+  });
+}
 
 /* Contact form (no backend — show confirmation) */
 const form = document.getElementById('contact-form');
 const formNote = document.getElementById('form-note');
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  formNote.textContent = 'Благодарим! Запитването е изпратено. Ще се свържем с вас скоро.';
-  form.reset();
-});
+if (form && formNote) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    formNote.textContent = 'Благодарим! Запитването е изпратено. Ще се свържем с вас скоро.';
+    form.reset();
+  });
+}

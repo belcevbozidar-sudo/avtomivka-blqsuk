@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Галерия — Тир Автомивка Блясък</title>
+<meta name="description" content="Реални снимки от Автомивка Блясък в кв. Горубляне, София. Разгледайте процеса на работа и лъскавите резултати от нашите услуги.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="images/favicon.png">
+</head>
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- HEADER -->
+<header class="site-header site-header-subpage" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <img src="images/logo.png" alt="Тир Автомивка Блясък" class="brand-logo">
+    </a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="index.html">Начало</a>
+      <a href="prices.html">Цени и услуги</a>
+      <a href="mobile-wash.html">Мобилна автомивка</a>
+      <a href="gallery.html" class="active">Галерия</a>
+      <a href="contacts.html">Контакти</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="tel:+359886572410" class="header-phone">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 5C3 3.89 3.89 3 5 3H8.28C8.76 3 9.18 3.32 9.31 3.78L10.5 7.8C10.61 8.18 10.49 8.59 10.2 8.86L8.1 10.83C9.21 13.18 10.82 14.79 13.17 15.9L15.14 13.8C15.41 13.51 15.82 13.39 16.2 13.5L20.22 14.69C20.68 14.82 21 15.24 21 15.72V19C21 20.11 20.11 21 19 21H17C9.27 21 3 14.73 3 7V5Z" stroke="currentColor" stroke-width="1.6"/></svg>
+        +359 88 657 2410
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- PAGE TITLE -->
+<section class="section section-alt page-title-section">
+  <div class="container">
+    <span class="kicker">Нашите резултати</span>
+    <h1>Галерия</h1>
+    <p>Реални снимки на леки автомобили, бусове и тежкотоварни камиони от нашия обект.</p>
+  </div>
+</section>
+
+<!-- GALLERY GRID -->
+<section class="section" id="gallery">
+  <div class="container">
+    <div class="gallery-grid" id="gallery-grid">
+      <!-- Populated dynamically via JS -->
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a href="index.html" class="brand brand-footer">
+      <img src="images/logo.png" alt="Тир Автомивка Блясък" class="brand-logo">
+    </a>
+    <nav class="footer-nav">
+      <a href="index.html">Начало</a>
+      <a href="prices.html">Цени и услуги</a>
+      <a href="mobile-wash.html">Мобилна автомивка</a>
+      <a href="gallery.html" class="active">Галерия</a>
+      <a href="contacts.html">Контакти</a>
+    </nav>
+    
+    <div class="footer-socials">
+      <a href="https://www.facebook.com/profile.php?id=61585893165260" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/avto.mivkablqsak" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@blyasak.detailing?_r=1&_t=ZN-96C8QPZp6rm&fbclid=IwY2xjawSlAjdleHRuA2FlbQIxMABzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEeF7OzA6I80sbkE1vq-XDqUEgDKdx__D3be9TXy45op6AlxoUfL-352jVCqQY_aem_sNbrW4oJqVVBclWjAel9SQ" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.95-1.72-.1.08-.21.17-.31.25-.02 3.78-.01 7.56-.02 11.34-.12 2.37-1.39 4.67-3.64 5.56-2.44.98-5.38.7-7.5-1.01-2.18-1.73-3.14-4.83-2.19-7.53.86-2.52 3.56-4.3 6.22-4.14.03.75-.01 1.5.01 2.25-.97-.04-2 .24-2.73.9-.96.86-1.25 2.27-.72 3.44.5 1.11 1.69 1.84 2.89 1.76 1.25-.05 2.4-1.02 2.6-2.25.04-3.17.02-6.34.03-9.51-.02-3.05-.01-6.11-.02-9.17z"/></svg>
+      </a>
+    </div>
+
+    <div class="footer-meta">
+      <p>гр. София, кв. Горубляне, бул. „Цариградско шосе" 164</p>
+      <p>+359 88 657 2410 · tir.avtomivka@gmail.com</p>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© <span id="year"></span> Тир Автомивка Блясък. Всички права запазени.</p>
+  </div>
+</footer>
+
+<a href="tel:+359886572410" class="fab-call" aria-label="Обади се">
+  <svg viewBox="0 0 24 24" fill="none"><path d="M3 5C3 3.89 3.89 3 5 3H8.28C8.76 3 9.18 3.32 9.31 3.78L10.5 7.8C10.61 8.18 10.49 8.59 10.2 8.86L8.1 10.83C9.21 13.18 10.82 14.79 13.17 15.9L15.14 13.8C15.41 13.51 15.82 13.39 16.2 13.5L20.22 14.69C20.68 14.82 21 15.24 21 15.72V19C21 20.11 20.11 21 19 21H17C9.27 21 3 14.73 3 7V5Z" stroke="currentColor" stroke-width="1.6"/></svg>
+</a>
+
+<script src="js/main.js"></script>
+</body>
+</html>

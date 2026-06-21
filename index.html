@@ -18,17 +18,16 @@
 <!-- HEADER -->
 <header class="site-header" id="header">
   <div class="container header-inner">
-    <a href="#top" class="brand">
+    <a href="index.html" class="brand">
       <img src="images/logo.png" alt="Тир Автомивка Блясък" class="brand-logo">
     </a>
 
     <nav class="main-nav" id="main-nav">
-      <a href="#home">Начало</a>
-      <a href="#prices">Цени</a>
-      <a href="#services">Услуги</a>
-      <a href="#gallery">Галерия</a>
-      <a href="#location">Локация</a>
-      <a href="#contact">Контакти</a>
+      <a href="index.html" class="active">Начало</a>
+      <a href="prices.html">Цени и услуги</a>
+      <a href="mobile-wash.html">Мобилна автомивка</a>
+      <a href="gallery.html">Галерия</a>
+      <a href="contacts.html">Контакти</a>
     </nav>
 
     <div class="header-actions">
@@ -45,18 +44,31 @@
 
 <!-- HERO -->
 <section class="hero" id="home">
-  <div class="hero-media">
-    <img src="images/tir-avtomivka-blqsyk.png" alt="Ръчно измиване на автомобил с пяна — Автомивка Блясък" loading="eager">
-    <div class="hero-gradient"></div>
+  <div class="hero-slider" id="hero-slider">
+    <div class="slide active"><img src="images/hero-slide-1.png" alt="Автомивка Блясък - Ръчно пране и детайлинг" loading="eager"></div>
+    <div class="slide"><img src="images/hero-slide-2.png" alt="Автомивка Блясък - Измиване на камиони и тирове" loading="lazy"></div>
+    <div class="slide"><img src="images/hero-slide-3.png" alt="Автомивка Блясък - Професионално вътрешно почистване" loading="lazy"></div>
+    <div class="slide"><img src="images/hero-slide-4.png" alt="Автомивка Блясък - Цялостен детайлинг и джанти" loading="lazy"></div>
   </div>
+  <div class="hero-gradient"></div>
+  
   <div class="container hero-inner">
     <div class="hero-badge"><span class="dot"></span> Отворено сега · кв. Горубляне, София</div>
     <h1>Чистота, която <span class="accent">блести</span>.<br>За коли, бусове и тирове.</h1>
     <p class="hero-lead">В Тир Автомивка Блясък предлагаме качествено измиване и почистване на автомобили, тирове, камиони, ванове, бусове и други — с грижа за всеки детайл.</p>
+    
     <div class="hero-cta">
-      <a href="#prices" class="btn btn-primary btn-lg">Виж цените</a>
-      <a href="#contact" class="btn btn-ghost btn-lg">Запази час</a>
+      <a href="prices.html" class="btn btn-primary btn-lg">Виж цените</a>
+      <a href="contacts.html" class="btn btn-ghost btn-lg">Запази час</a>
     </div>
+
+    <!-- Partner logos marquee inside Hero -->
+    <div class="hero-partners">
+      <div class="partners-track" id="partners-track">
+        <!-- populated via JS for seamless loop -->
+      </div>
+    </div>
+
     <div class="hero-stats">
       <div class="stat"><strong>10+</strong><span>години опит</span></div>
       <div class="stat"><strong>20+</strong><span>вида услуги</span></div>
@@ -76,246 +88,80 @@
   </div>
 </section>
 
-<!-- PRICES -->
-<section class="section" id="prices">
+<!-- SERVICES & MOBILE WASH OVERVIEW -->
+<section class="section" id="overview">
+  <div class="container overview-grid">
+    <div class="overview-box">
+      <span class="kicker">Професионални Услуги</span>
+      <h2>Какво предлагаме в базата ни</h2>
+      <p>Автомивка Блясък е специализиран център за измиване на всякакви видове превозни средства — от компактни градски автомобили до извънгабаритна строителна техника и тирове.</p>
+      <ul class="overview-list">
+        <li>Стандартно външно и вътрешно почистване</li>
+        <li>VIP детайлинг, пастиране и полиране на лак</li>
+        <li>Професионално пране на седалки и салони</li>
+        <li>Озониране за дезинфекция и премахване на миризми</li>
+        <li>Миене на шасита отдолу, двигатели и кранове</li>
+      </ul>
+      <a href="prices.html" class="btn btn-primary" style="margin-top: 24px; display: inline-block;">Виж цените и услугите</a>
+    </div>
+    
+    <div class="overview-box">
+      <span class="kicker">Нова Услуга</span>
+      <h2>Мобилна Автомивка до Адрес</h2>
+      <p>Нямате време да дойдете при нас? Ние ще дойдем при вас! Нашата мобилна автомивка е оборудвана с професионална техника за безводно и класическо измиване на адрес.</p>
+      <div class="overview-image-container">
+        <img src="images/mobile-wash-1.png" alt="Мобилна автомивка на адрес в София" class="overview-img" loading="lazy">
+      </div>
+      <a href="mobile-wash.html" class="btn btn-ghost" style="margin-top: 24px; display: inline-block;">Научи повече за услугата</a>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY PREVIEW -->
+<section class="section section-alt" id="gallery-preview">
   <div class="container">
     <div class="section-head">
-      <span class="kicker">Ценоразпис</span>
-      <h2>Цени в Автомивка Блясък</h2>
-      <p>Прозрачни цени за всеки тип превозно средство — от градско ауто до тежкотоварен тир.</p>
+      <span class="kicker">Резултати</span>
+      <h2>Галерия от обекта ни</h2>
+      <p>Вижте реални снимки на автомобили, бусове и камиони, измити в нашата база в кв. Горубляне, София.</p>
     </div>
-
-    <div class="price-grid">
-
-      <article class="price-card">
-        <div class="price-card-head">
-          <img src="images/avtomivka-gorublyane-avtomobili.png" alt="Лек автомобил" loading="lazy">
-          <h3>Леки автомобили</h3>
-        </div>
-        <ul class="price-list">
-          <li><span>Външно измиване</span><b>€11</b></li>
-          <li><span>Вътрешно почистване</span><b>€13</b></li>
-          <li><span>Комплексно почистване</span><b>€20</b></li>
-          <li class="vip"><span><i>VIP</i> Външно измиване</span><b>€16</b></li>
-          <li class="vip"><span><i>VIP</i> Вътрешно почистване</span><b>€20</b></li>
-          <li class="vip"><span><i>VIP</i> Комплексно почистване</span><b>€30</b></li>
-        </ul>
-      </article>
-
-      <article class="price-card">
-        <div class="price-card-head">
-          <img src="images/avtomivka-godublyane-suv-1024x482.png" alt="SUV / Ван" loading="lazy">
-          <h3>SUV / Ван</h3>
-        </div>
-        <ul class="price-list">
-          <li><span>Външно измиване</span><b>€13</b></li>
-          <li><span>Вътрешно почистване</span><b>€14</b></li>
-          <li><span>Комплексно почистване</span><b>€22</b></li>
-          <li class="vip"><span><i>VIP</i> Външно измиване</span><b>€15</b></li>
-          <li class="vip"><span><i>VIP</i> Вътрешно почистване</span><b>€20</b></li>
-          <li class="vip"><span><i>VIP</i> Комплексно почистване</span><b>€30</b></li>
-        </ul>
-      </article>
-
-      <article class="price-card">
-        <div class="price-card-head">
-          <img src="images/avtomivka-gorublyane-busove.png" alt="Бус" loading="lazy">
-          <h3>Бус</h3>
-        </div>
-        <ul class="price-list">
-          <li><span>Външно измиване</span><b>€17</b></li>
-          <li><span>Вътрешно почистване <i>(до 3 места)</i></span><b>€14</b></li>
-          <li><span>Вътрешно почистване <i>(до 8+1 места)</i></span><b>€17</b></li>
-          <li><span>Комплексно почистване <i>(до 3 места)</i></span><b>€25</b></li>
-          <li><span>Комплексно почистване <i>(до 8+1 места)</i></span><b>€28</b></li>
-          <li class="vip"><span><i>VIP</i> Външно измиване</span><b>€20</b></li>
-          <li class="vip"><span><i>VIP</i> Вътрешно почистване</span><b>€23</b></li>
-          <li class="vip"><span><i>VIP</i> Комплексно почистване</span><b>€40</b></li>
-        </ul>
-      </article>
-
-      <article class="price-card">
-        <div class="price-card-head">
-          <img src="images/avtomivka-gorublyane-tirove-kamioni.png" alt="Камион / Тир" loading="lazy">
-          <h3>Други автомобили</h3>
-        </div>
-        <ul class="price-list">
-          <li><span>Камион влекач <i>(без резервоар)</i></span><b>€20</b></li>
-          <li><span>Камион влекач <i>(с резервоар, киселина)</i></span><b>€25</b></li>
-          <li><span>Камион с ремарке — ТИР</span><b>€44</b></li>
-          <li><span>Ремарке вътре</span><b>€17</b></li>
-          <li><span>Самосвал нормално мръсен</span><b>€40</b></li>
-          <li><span>Самосвал много мръсен</span><b>цена по договаряне</b></li>
-          <li><span>Вътрешно за камион</span><b>€22</b></li>
-          <li><span>Соло камион</span><b>€33</b></li>
-          <li><span>Вътрешно фургон <i>(до 7 метра)</i></span><b>€15</b></li>
-        </ul>
-      </article>
+    <div class="gallery-grid-preview">
+      <img src="images/avtomivka-blqsak-gorublyane-sofia-tir-2.jpg" alt="Измит тир в автомивка Блясък" loading="lazy">
+      <img src="images/avtomivka-blqsak-gorublyane-sofia-tir-7.jpg" alt="Измиване на джанти и гуми" loading="lazy">
+      <img src="images/avtomivka-blqsak-gorublyane-sofia-tir-12-1.jpg" alt="Ръчно миене на кола в София" loading="lazy">
     </div>
-
-    <div class="addons">
-      <h3>Допълнителни услуги</h3>
-      <div class="addons-grid">
-        <div class="addon"><span>Твърда вакса</span><b>€17</b></div>
-        <div class="addon"><span>Подхранване на кожен салон</span><b>€15</b></div>
-        <div class="addon"><span>Озониране на купе</span><b>€20</b></div>
-        <div class="addon"><span>Премахване на асфалт <i>(на детайл)</i></span><b>€7</b></div>
-        <div class="addon"><span>Пране на седалка</span><b>€15</b></div>
-        <div class="addon"><span>Пране на под</span><b>€20</b></div>
-        <div class="addon"><span>Пране на кора</span><b>€8</b></div>
-        <div class="addon"><span>Пране на багажник</span><b>€18</b></div>
-        <div class="addon"><span>Пране на таван</span><b>€22</b></div>
-        <div class="addon"><span>Цялостно пране на кола</span><b>€130</b></div>
-        <div class="addon"><span>Машинно сушене на салон</span><b>€20</b></div>
-        <div class="addon"><span>Цялостно пране на SUV/ван</span><b>€160</b></div>
-        <div class="addon"><span>Пастиране/полиране <i>(на детайл)</i></span><b>€20</b></div>
-        <div class="addon"><span>Пастиране/полиране на кола <i>(цялостно)</i></span><b>€140</b></div>
-        <div class="addon"><span>Пастиране/полиране на SUV <i>(цялостно)</i></span><b>€170</b></div>
-        <div class="addon"><span>Пастиране/полиране на бус <i>(цялостно)</i></span><b>€190</b></div>
-        <div class="addon"><span>Полиране на фарове <i>(4 бр.)</i></span><b>€50</b></div>
-      </div>
-      <div class="addons-special">
-        <div class="addon-special">
-          <span class="badge-new">НОВО</span>
-          <p>Взимане на кола от адрес в рамките на София и връщане до адрес с пътна помощ <i>(само за VIP услуги)</i></p>
-          <b>25 лв. / €12,78</b>
-        </div>
-        <div class="addon-special">
-          <span class="badge-new">НОВО</span>
-          <p>Пране на килими</p>
-          <b>3 лв./кв.м (€1,53)</b>
-        </div>
-      </div>
-      <p class="vat-note">* Цените са с ДДС</p>
+    <div style="text-align: center; margin-top: 48px;">
+      <a href="gallery.html" class="btn btn-primary btn-lg">Разгледай цялата галерия</a>
     </div>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section class="section section-alt" id="services">
-  <div class="container">
-    <div class="section-head">
-      <span class="kicker">Какво предлагаме</span>
-      <h2>Услуги на Автомивка Блясък</h2>
-      <p>От стандартно измиване до пълен детайлинг — покриваме всеки тип превозно средство.</p>
-    </div>
-    <div class="services-grid">
-      <div class="service-pill">Миене на автомобили</div>
-      <div class="service-pill">Миене на камиони</div>
-      <div class="service-pill">Миене на бусове</div>
-      <div class="service-pill">Миене на ремаркета</div>
-      <div class="service-pill">Миене на кемпери</div>
-      <div class="service-pill">Миене на мотори</div>
-      <div class="service-pill">Миене на кранове</div>
-      <div class="service-pill">Миене на багери</div>
-      <div class="service-pill">Полиране на цинк/алуминий</div>
-      <div class="service-pill">Пране на салони</div>
-      <div class="service-pill">Миене на двигатели</div>
-      <div class="service-pill">Миене на шасита отдолу</div>
-      <div class="service-pill">Пране на тавани</div>
-      <div class="service-pill">Озониране на купета</div>
-      <div class="service-pill">Машинно сушене на салони</div>
-      <div class="service-pill">Химическо полиране на фарове</div>
-      <div class="service-pill">Химическо полиране на джанти</div>
-    </div>
-  </div>
-</section>
-
-<!-- PARTNERS -->
-<section class="section partners">
-  <div class="container">
-    <div class="section-head section-head-sm">
-      <span class="kicker">Доверие</span>
-      <h2>Нашите партньори</h2>
-    </div>
-    <div class="partners-track" id="partners-track">
-      <!-- duplicated via JS for seamless loop -->
-    </div>
-  </div>
-</section>
-
-<!-- GALLERY -->
-<section class="section" id="gallery">
-  <div class="container">
-    <div class="section-head">
-      <span class="kicker">Галерия</span>
-      <h2>Автомивка за тирове и автомобили в София</h2>
-      <p>Реални снимки от нашата база в кв. Горубляне.</p>
-    </div>
-    <div class="gallery-grid" id="gallery-grid"></div>
-  </div>
-</section>
-
-<!-- LOCATION + CONTACT -->
-<section class="section section-alt" id="location">
-  <div class="container contact-grid">
-    <div class="contact-info" id="contact">
-      <span class="kicker">Контакти и локация</span>
-      <h2>Заповядайте в Автомивка Блясък</h2>
-      <p class="contact-lead">Намираме се в кв. Горубляне, на бул. „Цариградско шосе" — лесен достъп за леки автомобили и тежкотоварна техника.</p>
-
-      <div class="contact-cards">
-        <a class="contact-card" href="https://maps.google.com/?q=бул.+Цариградско+шосе+164,+София" target="_blank" rel="noopener">
-          <span class="contact-icon">📍</span>
-          <div><strong>Адрес</strong><p>гр. София, кв. Горубляне, бул. „Цариградско шосе" 164</p></div>
-        </a>
-        <a class="contact-card" href="tel:+359886572410">
-          <span class="contact-icon">📞</span>
-          <div><strong>Телефон</strong><p>+359 88 657 2410</p></div>
-        </a>
-        <a class="contact-card" href="mailto:tir.avtomivka@gmail.com">
-          <span class="contact-icon">✉️</span>
-          <div><strong>Имейл</strong><p>tir.avtomivka@gmail.com</p></div>
-        </a>
-      </div>
-
-      <div class="map-frame">
-        <iframe
-          src="https://www.google.com/maps?q=бул.+Цариградско+шосе+164,+София&output=embed"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
-          title="Карта на Автомивка Блясък"></iframe>
-      </div>
-    </div>
-
-    <form class="contact-form" id="contact-form">
-      <h3>Изпрати запитване</h3>
-      <p class="form-sub">Отговаряме до 24 часа.</p>
-      <label>
-        Имена
-        <input type="text" name="name" placeholder="Вашето име" required>
-      </label>
-      <label>
-        Телефонен номер
-        <input type="tel" name="phone" placeholder="+359 88 ..." required>
-      </label>
-      <label>
-        Email
-        <input type="email" name="email" placeholder="example@email.com">
-      </label>
-      <label>
-        Съобщение
-        <textarea name="message" rows="4" placeholder="Разкажете ни какво ви трябва..." required></textarea>
-      </label>
-      <button type="submit" class="btn btn-primary btn-block">Изпрати запитване</button>
-      <p class="form-note" id="form-note"></p>
-    </form>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer class="site-footer">
   <div class="container footer-inner">
-    <a href="#top" class="brand brand-footer">
+    <a href="index.html" class="brand brand-footer">
       <img src="images/logo.png" alt="Тир Автомивка Блясък" class="brand-logo">
     </a>
     <nav class="footer-nav">
-      <a href="#home">Начало</a>
-      <a href="#prices">Цени</a>
-      <a href="#services">Услуги</a>
-      <a href="#gallery">Галерия</a>
-      <a href="#contact">Контакти</a>
+      <a href="index.html">Начало</a>
+      <a href="prices.html">Цени и услуги</a>
+      <a href="mobile-wash.html">Мобилна автомивка</a>
+      <a href="gallery.html">Галерия</a>
+      <a href="contacts.html">Контакти</a>
     </nav>
+    
+    <div class="footer-socials">
+      <a href="https://www.facebook.com/profile.php?id=61585893165260" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/avto.mivkablqsak" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <a href="https://www.tiktok.com/@blyasak.detailing?_r=1&_t=ZN-96C8QPZp6rm&fbclid=IwY2xjawSlAjdleHRuA2FlbQIxMABzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEeF7OzA6I80sbkE1vq-XDqUEgDKdx__D3be9TXy45op6AlxoUfL-352jVCqQY_aem_sNbrW4oJqVVBclWjAel9SQ" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.86-.74-3.95-1.72-.1.08-.21.17-.31.25-.02 3.78-.01 7.56-.02 11.34-.12 2.37-1.39 4.67-3.64 5.56-2.44.98-5.38.7-7.5-1.01-2.18-1.73-3.14-4.83-2.19-7.53.86-2.52 3.56-4.3 6.22-4.14.03.75-.01 1.5.01 2.25-.97-.04-2 .24-2.73.9-.96.86-1.25 2.27-.72 3.44.5 1.11 1.69 1.84 2.89 1.76 1.25-.05 2.4-1.02 2.6-2.25.04-3.17.02-6.34.03-9.51-.02-3.05-.01-6.11-.02-9.17z"/></svg>
+      </a>
+    </div>
+
     <div class="footer-meta">
       <p>гр. София, кв. Горубляне, бул. „Цариградско шосе" 164</p>
       <p>+359 88 657 2410 · tir.avtomivka@gmail.com</p>
