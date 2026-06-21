@@ -92,17 +92,30 @@
 <section class="section" id="overview">
   <div class="container overview-grid">
     <div class="overview-box">
-      <span class="kicker">Професионални Услуги</span>
-      <h2>Какво предлагаме в базата ни</h2>
-      <p>Автомивка Блясък е специализиран център за измиване на всякакви видове превозни средства — от компактни градски автомобили до извънгабаритна строителна техника и тирове.</p>
-      <ul class="overview-list">
-        <li>Стандартно външно и вътрешно почистване</li>
-        <li>VIP детайлинг, пастиране и полиране на лак</li>
-        <li>Професионално пране на седалки и салони</li>
-        <li>Озониране за дезинфекция и премахване на миризми</li>
-        <li>Миене на шасита отдолу, двигатели и кранове</li>
-      </ul>
-      <a href="prices.html" class="btn btn-primary" style="margin-top: 24px; display: inline-block;">Виж цените и услугите</a>
+      <span class="kicker">Професионални Услуги &amp; Цени</span>
+      <h2>Качествена грижа на изгодни цени</h2>
+      <p>Професионално измиване, пране и VIP детайлинг на всякакви превозни средства с прозрачно ценообразуване:</p>
+      
+      <div class="home-prices-hint">
+        <div class="price-hint-item">
+          <span>🚗 Леки коли</span>
+          <strong>от €11</strong>
+        </div>
+        <div class="price-hint-item">
+          <span>🚙 SUV / Ван</span>
+          <strong>от €13</strong>
+        </div>
+        <div class="price-hint-item">
+          <span>🚐 Бусове</span>
+          <strong>от €14</strong>
+        </div>
+        <div class="price-hint-item">
+          <span>🚛 Камиони &amp; ТИР</span>
+          <strong>от €17</strong>
+        </div>
+      </div>
+      
+      <a href="prices.html" class="btn btn-primary" style="margin-top: 24px; display: inline-block;">Виж пълния ценоразпис</a>
     </div>
     
     <div class="overview-box">
@@ -112,7 +125,7 @@
       <div class="overview-image-container">
         <img src="images/mobile-wash-1.png" alt="Мобилна автомивка на адрес в София" class="overview-img" loading="lazy">
       </div>
-      <a href="mobile-wash.html" class="btn btn-ghost" style="margin-top: 24px; display: inline-block;">Научи повече за услугата</a>
+      <a href="mobile-wash.html" class="btn btn-ghost-dark" style="margin-top: 24px; display: inline-block;">Научи повече за услугата</a>
     </div>
   </div>
 </section>
@@ -133,6 +146,63 @@
     <div style="text-align: center; margin-top: 48px;">
       <a href="gallery.html" class="btn btn-primary btn-lg">Разгледай цялата галерия</a>
     </div>
+  </div>
+</section>
+
+<!-- CONTACT INFO & FORM -->
+<section class="section" id="location">
+  <div class="container contact-grid">
+    <div class="contact-info" id="contact">
+      <span class="kicker">Контакти и локация</span>
+      <h2>Заповядайте в Автомивка Блясък</h2>
+      <p class="contact-lead">Намираме се в кв. Горубляне, на бул. „Цариградско шосе" — лесен достъп за леки автомобили и тежкотоварна техника.</p>
+
+      <div class="contact-cards">
+        <a class="contact-card" href="https://maps.google.com/?q=бул.+Цариградско+шосе+164,+София" target="_blank" rel="noopener">
+          <span class="contact-icon">📍</span>
+          <div><strong>Адрес</strong><p>гр. София, кв. Горубляне, бул. „Цариградско шосе" 164</p></div>
+        </a>
+        <a class="contact-card" href="tel:+359886572410">
+          <span class="contact-icon">📞</span>
+          <div><strong>Телефон</strong><p>+359 88 657 2410</p></div>
+        </a>
+        <a class="contact-card" href="mailto:tir.avtomivka@gmail.com">
+          <span class="contact-icon">✉️</span>
+          <div><strong>Имейл</strong><p>tir.avtomivka@gmail.com</p></div>
+        </a>
+      </div>
+
+      <div class="map-frame">
+        <iframe
+          src="https://www.google.com/maps?q=бул.+Цариградско+шосе+164,+София&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Карта на Автомивка Блясък"></iframe>
+      </div>
+    </div>
+
+    <form class="contact-form" id="contact-form">
+      <h3>Изпрати запитване</h3>
+      <p class="form-sub">Отговаряме до 24 часа.</p>
+      <label>
+        Имена
+        <input type="text" name="name" placeholder="Вашето име" required>
+      </label>
+      <label>
+        Телефонен номер
+        <input type="tel" name="phone" placeholder="+359 88 ..." required>
+      </label>
+      <label>
+        Email
+        <input type="email" name="email" placeholder="example@email.com">
+      </label>
+      <label>
+        Съобщение
+        <textarea name="message" rows="4" placeholder="Разкажете ни какво ви трябва..." required></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary btn-block">Изпрати запитване</button>
+      <p class="form-note" id="form-note"></p>
+    </form>
   </div>
 </section>
 

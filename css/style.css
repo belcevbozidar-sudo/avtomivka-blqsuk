@@ -268,10 +268,10 @@ p{margin:0;}
 }
 .partners-track .track-inner{
   display:flex;gap:48px;align-items:center;flex-shrink:0;
-  animation:scroll-left 28s linear infinite;
+  animation:scroll-left 14s linear infinite;
 }
 .partners-track img{
-  height:42px;width:auto;object-fit:contain;
+  height:55px;width:auto;object-fit:contain;
   filter:none;opacity:1;
   transition:filter .3s, opacity .3s;flex-shrink:0;
 }
@@ -424,7 +424,7 @@ p{margin:0;}
 .page-title-section h1 {
   font-family: var(--ff-display);
   font-size: clamp(2rem, 4vw, 3rem);
-  color: #fff;
+  color: var(--text);
   margin-bottom: 10px;
 }
 .page-title-section p {
@@ -508,7 +508,7 @@ p{margin:0;}
 }
 .lead-text {
   font-size: 1.15rem;
-  color: #fff;
+  color: var(--text);
   margin-bottom: 24px;
   line-height: 1.6;
 }
@@ -647,3 +647,45 @@ p{margin:0;}
   }
 }
 
+/* ===== Pricing Hint on Home Page ===== */
+.home-prices-hint {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+.price-hint-item {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.price-hint-item span {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+.price-hint-item strong {
+  color: var(--accent);
+  font-weight: 800;
+  font-family: var(--ff-display);
+}
+
+/* ===== Dark Ghost Button for Light Backgrounds ===== */
+.btn-ghost-dark {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 24px;
+  border-radius: var(--radius-btn);
+  font-weight: 700;
+  transition: all 0.3s;
+}
+.btn-ghost-dark:hover {
+  background: var(--bg-soft);
+  transform: translateY(-2px);
+  border-color: var(--text);
+}
