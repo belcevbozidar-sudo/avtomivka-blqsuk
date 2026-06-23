@@ -330,6 +330,7 @@ p{margin:0;}
   outline:none;border-color:var(--accent);
 }
 .form-note{margin-top:14px;font-size:0.88rem;color:#1f9d57;text-align:center;min-height:1.2em;}
+.contact-form-inline{position:static;}
 
 /* ===== Footer ===== */
 .site-footer{background:var(--bg-soft);border-top:1px solid var(--border);padding:56px 0 0;}
