@@ -4,6 +4,29 @@ if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
 }
 
+// Dynamic work status badge (Open from 9:00 to 18:00 Europe/Sofia)
+const badge = document.getElementById('work-status-badge');
+if (badge) {
+  try {
+    const options = { timeZone: 'Europe/Sofia', hour: 'numeric', hour12: false };
+    const sofiaHour = parseInt(new Intl.DateTimeFormat('en-US', options).format(new Date()), 10);
+    if (sofiaHour >= 9 && sofiaHour < 18) {
+      badge.style.display = 'inline-flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  } catch (e) {
+    console.error('Error calculating Europe/Sofia hour:', e);
+    const localHour = new Date().getHours();
+    if (localHour >= 9 && localHour < 18) {
+      badge.style.display = 'inline-flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}
+
+
 /* Header scroll state */
 const header = document.getElementById('header');
 if (header) {
