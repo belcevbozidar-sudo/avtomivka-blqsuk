@@ -136,31 +136,8 @@ if (galleryGrid) {
   });
 }
 
-/* Contact form (no backend — show confirmation) */
-const form = document.getElementById('contact-form');
-const formNote = document.getElementById('form-note');
-if (form && formNote) {
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    formNote.textContent = 'Благодарим! Вашето запитване/час беше изпратено успешно. Ще се свържем с вас скоро.';
-    form.reset();
-    
-    const timeSelects = form.querySelectorAll('#booking-time');
-    timeSelects.forEach(select => {
-      select.innerHTML = '<option value="" disabled selected>Изберете първо дата...</option>';
-    });
-
-    const gridContainers = document.querySelectorAll('.booking-slots-container');
-    gridContainers.forEach(container => {
-      container.style.display = 'none';
-      const grid = container.querySelector('.booking-slots-grid');
-      if (grid) grid.innerHTML = '';
-    });
-  });
-}
-
-/* ===== Booking Calendar Logic ===== */
-const BOOKING_API_URL = 'https://extendsclass.com/api/json-storage/bin/bfefdfb';
+/* ===== Booking Calendar Logic & Form Submissions ===== */
+const BOOKING_API_URL = '/api/bookings';
 const WORK_HOURS = [
   "09:00 - 10:00",
   "10:00 - 11:00",
@@ -185,6 +162,133 @@ async function getBookedSlots() {
     const cached = localStorage.getItem('avtomivka_blqsuk_bookings');
     return cached ? JSON.parse(cached) : {};
   }
+}
+
+async function saveBookingsToServer(data) {
+  try {
+    const res = await fetch(BOOKING_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) throw new Error('API save failed');
+    localStorage.setItem('avtomivka_blqsuk_bookings', JSON.stringify(data));
+    return true;
+  } catch (err) {
+    console.error('Error saving bookings:', err);
+    return false;
+  }
+}
+
+function sendNtfyAlert(name, phone, email, date, time, message) {
+  const topic = 'avtomivka_blqsuk_alerts';
+  const url = `https://ntfy.sh/${topic}`;
+  
+  let text = `👤 Клиент: ${name}\n📞 Телефон: ${phone}\n✉️ Имейл: ${email || 'Не е посочен'}\n`;
+  if (date && time) {
+    const parts = date.split('-');
+    text += `📅 Резервиран час: ${parts[2]}.${parts[1]}.${parts[0]} г. в ${time}\n`;
+  } else {
+    text += `ℹ️ Тип: Общо запитване от сайта\n`;
+  }
+  text += `💬 Съобщение: ${message}`;
+
+  fetch(url, {
+    method: 'POST',
+    body: text,
+    headers: {
+      'Title': date && time ? 'Нова Резервация за Час! 🚗✨' : 'Ново съобщение от сайта! ✉️',
+      'Priority': 'high',
+      'Tags': date && time ? 'car,calendar_spiral' : 'incoming_envelope,bell'
+    }
+  }).catch(err => console.error('Error sending ntfy notification:', err));
+}
+
+// Contact form submit listener
+const form = document.getElementById('contact-form');
+const formNote = document.getElementById('form-note');
+if (form && formNote) {
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    // Get form field values
+    const nameVal = form.querySelector('[name="name"]').value;
+    const phoneVal = form.querySelector('[name="phone"]').value;
+    const emailVal = form.querySelector('[name="email"]').value || '';
+    const messageVal = form.querySelector('[name="message"]').value;
+    
+    const dateInput = form.querySelector('#booking-date');
+    const timeSelect = form.querySelector('#booking-time');
+    
+    let selectedDate = dateInput ? dateInput.value : '';
+    let selectedTime = timeSelect ? timeSelect.value : '';
+    
+    formNote.style.color = 'var(--text)';
+    formNote.textContent = 'Обработване на заявката...';
+    
+    if (selectedDate && selectedTime) {
+      // It's a booking reservation
+      try {
+        const bookings = await getBookedSlots();
+        if (!bookings[selectedDate]) {
+          bookings[selectedDate] = {};
+        }
+        
+        // Double check if slot is already taken in the database
+        if (bookings[selectedDate][selectedTime]) {
+          formNote.style.color = '#ff4a4a';
+          formNote.textContent = 'Този час току-що беше зает! Моля, изберете друг час.';
+          return;
+        }
+        
+        // Add booking
+        bookings[selectedDate][selectedTime] = {
+          name: nameVal,
+          phone: phoneVal,
+          email: emailVal,
+          message: messageVal,
+          type: 'customer',
+          timestamp: new Date().toISOString()
+        };
+        
+        const success = await saveBookingsToServer(bookings);
+        if (!success) {
+          formNote.style.color = '#ff4a4a';
+          formNote.textContent = 'Грешка при връзката с календара. Моля, опитайте отново или се обадете по телефона.';
+          return;
+        }
+        
+        // Send alert
+        sendNtfyAlert(nameVal, phoneVal, emailVal, selectedDate, selectedTime, messageVal);
+        formNote.textContent = 'Благодарим! Часът Ви беше запазен успешно. Ще се свържем с Вас за потвърждение.';
+        
+      } catch (err) {
+        console.error('Error during reservation:', err);
+        formNote.style.color = '#ff4a4a';
+        formNote.textContent = 'Грешка при резервация. Моля, опитайте отново.';
+        return;
+      }
+    } else {
+      // It's a general inquiry
+      sendNtfyAlert(nameVal, phoneVal, emailVal, '', '', messageVal);
+      formNote.textContent = 'Благодарим! Запитването е изпратено успешно. Ще се свържем с Вас скоро.';
+    }
+    
+    form.reset();
+    
+    if (timeSelect) {
+      timeSelect.innerHTML = '<option value="" disabled selected>Изберете първо дата...</option>';
+    }
+    
+    const gridContainers = document.querySelectorAll('.booking-slots-container');
+    gridContainers.forEach(container => {
+      container.style.display = 'none';
+      const grid = container.querySelector('.booking-slots-grid');
+      if (grid) grid.innerHTML = '';
+    });
+  });
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -237,7 +341,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
       
-      const bookedHours = bookings[selectedDate] || [];
+      const bookedHours = bookings[selectedDate] || {};
       timeSelect.innerHTML = '<option value="" disabled selected>Изберете час...</option>';
       
       const grid = container.querySelector('.booking-slots-grid');
@@ -245,7 +349,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       container.style.display = 'block';
       
       WORK_HOURS.forEach(slot => {
-        const isBooked = bookedHours.includes(slot);
+        const isBooked = bookedHours[slot] !== undefined;
         
         // Populate option element
         const option = document.createElement('option');

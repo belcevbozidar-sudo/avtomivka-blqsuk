@@ -210,6 +210,38 @@
     border-color: var(--text);
     color: var(--text);
   }
+  
+  /* ===== All Bookings Cards ===== */
+  .booking-summary-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px -2px rgba(15,23,42,0.04);
+    text-align: left;
+  }
+  .booking-summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(15,23,42,0.06);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+  .booking-summary-date {
+    font-weight: 800;
+    color: var(--accent);
+    font-size: 1.05rem;
+  }
+  .booking-summary-time {
+    font-weight: 700;
+    color: var(--text);
+    background: rgba(15,23,42,0.04);
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+  }
 </style>
 </head>
 <body>
@@ -283,6 +315,14 @@
 
       <div class="admin-slots-list" id="slots-list">
         <!-- Javascript will populate rows here -->
+      </div>
+
+      <!-- ALL RESERVATIONS OVERVIEW -->
+      <div style="margin-top: 48px; border-top: 2px solid var(--border); padding-top: 32px;">
+        <h2 style="font-family: var(--ff-display); margin-bottom: 20px; text-align: left;">Списък с всички резервации (бъдещи и минали)</h2>
+        <div class="admin-all-bookings-list" id="all-bookings-list">
+          <!-- Javascript will populate cards here -->
+        </div>
       </div>
     </main>
   </div>
@@ -365,6 +405,7 @@
     setSyncState('ok', 'Всички данни са заредени');
     
     renderSlots();
+    renderAllBookingsList();
     
     adminDateInput.addEventListener('change', renderSlots);
   }
@@ -387,21 +428,48 @@
     const parts = selectedDate.split('-');
     dateHeading.textContent = `Часове за ${parts[2]}.${parts[1]}.${parts[0]} г.`;
     
-    const bookedHoursForDate = bookingsData[selectedDate] || [];
+    const bookedHoursForDate = bookingsData[selectedDate] || {};
     slotsList.innerHTML = '';
     
     WORK_HOURS.forEach(slot => {
-      const isBooked = bookedHoursForDate.includes(slot);
+      const booking = bookedHoursForDate[slot];
+      const isBooked = booking !== undefined;
       
       const row = document.createElement('div');
       row.className = 'admin-slot-row';
+      row.style.flexDirection = 'column';
+      row.style.alignItems = 'stretch';
+      row.style.gap = '12px';
+      
+      let customerInfoHtml = '';
+      if (isBooked) {
+        if (booking.type === 'customer') {
+          customerInfoHtml = `
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(15,23,42,0.06); font-size: 0.9rem; color: var(--text-dim); text-align: left; line-height: 1.4;">
+              👤 <strong>Клиент:</strong> ${booking.name}<br>
+              📞 <strong>Телефон:</strong> <a href="tel:${booking.phone}">${booking.phone}</a><br>
+              ✉️ <strong>Имейл:</strong> ${booking.email || 'няма'}<br>
+              💬 <strong>Бележка:</strong> ${booking.message || 'няма'}
+            </div>
+          `;
+        } else {
+          customerInfoHtml = `
+            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(15,23,42,0.06); font-size: 0.9rem; color: var(--text-dim); text-align: left;">
+              ⚙️ <em>Ръчно блокиран от администратор</em>
+            </div>
+          `;
+        }
+      }
       
       row.innerHTML = `
-        <div class="admin-slot-info">
-          <span class="admin-slot-time">${slot}</span>
-          <span class="admin-slot-badge ${isBooked ? 'busy' : 'free'}">${isBooked ? 'Зает' : 'Свободен'}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <div class="admin-slot-info">
+            <span class="admin-slot-time">${slot}</span>
+            <span class="admin-slot-badge ${isBooked ? 'busy' : 'free'}">${isBooked ? 'Зает' : 'Свободен'}</span>
+          </div>
+          <button class="admin-btn admin-btn-toggle ${isBooked ? 'active' : ''}">${isBooked ? 'Освободи час' : 'Блокирай час'}</button>
         </div>
-        <button class="admin-btn admin-btn-toggle ${isBooked ? 'active' : ''}">${isBooked ? 'Маркирай Свободен' : 'Маркирай Зает'}</button>
+        ${customerInfoHtml}
       `;
       
       const toggleBtn = row.querySelector('.admin-btn');
@@ -410,17 +478,21 @@
         setSyncState('syncing', 'Записване на промените...');
         
         if (isBooked) {
-          // Remove from busy slots
-          bookingsData[selectedDate] = bookedHoursForDate.filter(h => h !== slot);
-          if (bookingsData[selectedDate].length === 0) {
+          // Remove booking
+          delete bookingsData[selectedDate][slot];
+          if (Object.keys(bookingsData[selectedDate]).length === 0) {
             delete bookingsData[selectedDate];
           }
         } else {
-          // Add to busy slots
+          // Manually block
           if (!bookingsData[selectedDate]) {
-            bookingsData[selectedDate] = [];
+            bookingsData[selectedDate] = {};
           }
-          bookingsData[selectedDate].push(slot);
+          bookingsData[selectedDate][slot] = {
+            name: 'Ръчно блокиран',
+            type: 'admin',
+            timestamp: new Date().toISOString()
+          };
         }
         
         // Sync with API
@@ -432,22 +504,115 @@
         }
         
         renderSlots();
+        renderAllBookingsList();
       });
       
       slotsList.appendChild(row);
     });
   }
 
+  function renderAllBookingsList() {
+    const listContainer = document.getElementById('all-bookings-list');
+    if (!listContainer) return;
+    
+    listContainer.innerHTML = '';
+    
+    const allBookings = [];
+    Object.keys(bookingsData).forEach(date => {
+      const slots = bookingsData[date] || {};
+      Object.keys(slots).forEach(slot => {
+        allBookings.push({
+          date: date,
+          slot: slot,
+          ...slots[slot]
+        });
+      });
+    });
+    
+    if (allBookings.length === 0) {
+      listContainer.innerHTML = '<p style="color: var(--text-dim); font-style: italic; text-align: left;">Няма записани часове в системата.</p>';
+      return;
+    }
+    
+    // Sort chronologically
+    allBookings.sort((a, b) => {
+      if (a.date !== b.date) {
+        return a.date.localeCompare(b.date);
+      }
+      return a.slot.localeCompare(b.slot);
+    });
+    
+    allBookings.forEach(booking => {
+      const parts = booking.date.split('-');
+      const formattedDate = `${parts[2]}.${parts[1]}.${parts[0]} г.`;
+      
+      const card = document.createElement('div');
+      card.className = 'booking-summary-card';
+      
+      let detailsHtml = '';
+      if (booking.type === 'customer') {
+        detailsHtml = `
+          <div style="font-size: 0.95rem; line-height: 1.5; color: var(--text);">
+            👤 <strong>Клиент:</strong> ${booking.name}<br>
+            📞 <strong>Телефон:</strong> <a href="tel:${booking.phone}" style="color: var(--accent); font-weight: 600;">${booking.phone}</a><br>
+            ✉️ <strong>Имейл:</strong> ${booking.email || 'няма'}<br>
+            💬 <strong>Бележка:</strong> ${booking.message || 'няма'}
+          </div>
+        `;
+      } else {
+        detailsHtml = `
+          <div style="font-size: 0.95rem; color: var(--text-dim); font-style: italic;">
+            ⚙️ Ръчно блокиран час от администратор
+          </div>
+        `;
+      }
+      
+      card.innerHTML = `
+        <div class="booking-summary-header">
+          <span class="booking-summary-date">📅 ${formattedDate}</span>
+          <span class="booking-summary-time">⏰ ${booking.slot}</span>
+        </div>
+        ${detailsHtml}
+        <div style="margin-top: 14px; text-align: right;">
+          <button class="logout-btn" style="padding: 6px 12px; font-size: 0.8rem; border-color: rgba(255, 74, 74, 0.3); color: #ff4a4a; display: inline-block; width: auto;" onclick="deleteBookingFromList('${booking.date}', '${booking.slot}')">Освободи час</button>
+        </div>
+      `;
+      listContainer.appendChild(card);
+    });
+  }
+
+  window.deleteBookingFromList = async (date, slot) => {
+    if (!confirm(`Сигурни ли сте, че искате да освободите часа ${slot} на ${date}?`)) return;
+    
+    setSyncState('syncing', 'Записване на промените...');
+    if (bookingsData[date]) {
+      delete bookingsData[date][slot];
+      if (Object.keys(bookingsData[date]).length === 0) {
+        delete bookingsData[date];
+      }
+      
+      const success = await saveBookings(bookingsData);
+      if (success) {
+        setSyncState('ok', 'Успешно освободен час!');
+      } else {
+        setSyncState('error', 'Грешка при запис!');
+      }
+      
+      renderSlots();
+      renderAllBookingsList();
+    }
+  };
+
   async function saveBookings(data) {
     try {
       const res = await fetch(BOOKING_API_URL, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
       });
-      if (!res.ok) throw new Error('PUT failed');
+      if (!res.ok) throw new Error('POST failed');
       localStorage.setItem('avtomivka_blqsuk_bookings', JSON.stringify(data));
       return true;
     } catch (err) {
