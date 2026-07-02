@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Административен Панел — Автомивка Блясък</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="images/favicon.png">
+<style>
+  /* Extra admin styles */
+  .admin-login-container {
+    max-width: 400px;
+    margin: 120px auto;
+    padding: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .admin-login-container h2 {
+    margin-bottom: 8px;
+    font-family: var(--ff-display);
+  }
+  .admin-login-container p {
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    font-size: 0.9rem;
+  }
+  .admin-login-container input[type="password"] {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    outline: none;
+  }
+  .admin-login-container input[type="password"]:focus {
+    border-color: var(--accent);
+  }
+  .admin-login-error {
+    color: #ff4a4a;
+    font-size: 0.85rem;
+    margin-top: -8px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .admin-dashboard {
+    display: none;
+  }
+  .admin-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 40px;
+    margin-top: 40px;
+  }
+  @media (max-width: 768px) {
+    .admin-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+  }
+  .admin-sidebar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    height: fit-content;
+  }
+  .admin-sidebar label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .admin-sidebar input[type="date"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+  }
+  .admin-main {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+  }
+  .admin-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  .admin-header-flex h2 {
+    font-family: var(--ff-display);
+    margin: 0;
+  }
+  .admin-slots-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .admin-slot-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    transition: border-color 0.2s;
+  }
+  .admin-slot-row:hover {
+    border-color: rgba(47, 184, 255, 0.4);
+  }
+  .admin-slot-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .admin-slot-time {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+  .admin-slot-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .admin-slot-badge.free {
+    background: rgba(61, 220, 122, 0.15);
+    color: #2eb05d;
+  }
+  .admin-slot-badge.busy {
+    background: rgba(255, 74, 74, 0.15);
+    color: #ff4a4a;
+  }
+  .admin-btn {
+    padding: 10px 18px;
+    border-radius: var(--radius-btn);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .admin-btn-toggle {
+    background: var(--bg-soft);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .admin-btn-toggle.active {
+    background: var(--text);
+    color: var(--surface);
+    border-color: var(--text);
+  }
+  .admin-btn-toggle.active:hover {
+    opacity: 0.9;
+  }
+  .sync-status {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .sync-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3ddc7a;
+    display: inline-block;
+  }
+  .sync-indicator.syncing {
+    background: var(--accent);
+    animation: pulse 1s infinite alternate;
+  }
+  .sync-indicator.error {
+    background: #ff4a4a;
+  }
+  .logout-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 16px;
+    border-radius: var(--radius-btn);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .logout-btn:hover {
+    border-color: var(--text);
+    color: var(--text);
+  }
+</style>
+</head>
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- HEADER (Matching visual style) -->
+<header class="site-header site-header-subpage" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <img src="images/logo.png" alt="Автомивка Блясък" class="brand-logo">
+    </a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="index.html">Начало</a>
+      <a href="prices.html">Цени и услуги</a>
+      <a href="mobile-wash.html">Мобилна автомивка</a>
+      <a href="car-pickup.html">Взимане от адрес</a>
+      <a href="gallery.html">Галерия</a>
+      <a href="contacts.html">Контакти</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="tel:+359886572410" class="header-phone">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 5C3 3.89 3.89 3 5 3H8.28C8.76 3 9.18 3.32 9.31 3.78L10.5 7.8C10.61 8.18 10.49 8.59 10.2 8.86L8.1 10.83C9.21 13.18 10.82 14.79 13.17 15.9L15.14 13.8C15.41 13.51 15.82 13.39 16.2 13.5L20.22 14.69C20.68 14.82 21 15.24 21 15.72V19C21 20.11 20.11 21 19 21H17C9.27 21 3 14.73 3 7V5Z" stroke="currentColor" stroke-width="1.6"/></svg>
+        +359 88 657 2410
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- LOGIN PAGE -->
+<div id="login-section" class="container">
+  <div class="admin-login-container">
+    <h2>Админ Вход</h2>
+    <p>Моля, въведете парола, за да отворите графика за заети часове.</p>
+    <div class="admin-login-error" id="login-error">Невалидна парола!</div>
+    <form id="login-form">
+      <input type="password" id="admin-pass" placeholder="Парола" required>
+      <button type="submit" class="btn btn-primary btn-block">Вход</button>
+    </form>
+  </div>
+</div>
+
+<!-- MAIN DASHBOARD -->
+<div id="dashboard-section" class="container admin-dashboard">
+  <div class="admin-grid">
+    <!-- SIDEBAR WITH DATE PICKER -->
+    <aside class="admin-sidebar">
+      <label for="admin-date">Изберете дата</label>
+      <input type="date" id="admin-date">
+      
+      <div class="sync-status">
+        <span class="sync-indicator" id="sync-indicator"></span>
+        <span id="sync-text">Всички промени са записани</span>
+      </div>
+      
+      <div style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 20px;">
+        <button class="logout-btn btn-block" id="logout-btn">Изход</button>
+      </div>
+    </aside>
+
+    <!-- SLOTS LIST -->
+    <main class="admin-main">
+      <div class="admin-header-flex">
+        <h2 id="selected-date-heading">Часове за днес</h2>
+      </div>
+
+      <div class="admin-slots-list" id="slots-list">
+        <!-- Javascript will populate rows here -->
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+<script>
+  // Secure administration verification (SHA-256 hash validation)
+  const ADMIN_HASH = "4a7c28c24df60238d7994982c4a12bd9cbc0990a7f7e702712c150c8d6a4a6aa";
+
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  }
+
+  // Auth elements
+  const loginSection = document.getElementById('login-section');
+  const dashboardSection = document.getElementById('dashboard-section');
+  const loginForm = document.getElementById('login-form');
+  const adminPass = document.getElementById('admin-pass');
+  const loginError = document.getElementById('login-error');
+  const logoutBtn = document.getElementById('logout-btn');
+
+  // Dashboard elements
+  const adminDateInput = document.getElementById('admin-date');
+  const dateHeading = document.getElementById('selected-date-heading');
+  const slotsList = document.getElementById('slots-list');
+  const syncIndicator = document.getElementById('sync-indicator');
+  const syncText = document.getElementById('sync-text');
+
+  // State management
+  let bookingsData = {};
+  
+  // Login handler
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const hash = await sha256(adminPass.value);
+    if (hash === ADMIN_HASH) {
+      sessionStorage.setItem('avtomivka_admin_auth', 'true');
+      showDashboard();
+    } else {
+      loginError.style.display = 'block';
+      adminPass.value = '';
+    }
+  });
+
+  // Logout handler
+  logoutBtn.addEventListener('click', () => {
+    sessionStorage.removeItem('avtomivka_admin_auth');
+    window.location.reload();
+  });
+
+  // Check auth on load
+  if (sessionStorage.getItem('avtomivka_admin_auth') === 'true') {
+    showDashboard();
+  }
+
+  async function showDashboard() {
+    loginSection.style.display = 'none';
+    dashboardSection.style.display = 'block';
+    
+    // Set date input to today
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1;
+    let dd = today.getDate();
+    if (mm < 10) mm = '0' + mm;
+    if (dd < 10) dd = '0' + dd;
+    adminDateInput.value = `${yyyy}-${mm}-${dd}`;
+    
+    // Set min date to today
+    adminDateInput.min = `${yyyy}-${mm}-${dd}`;
+    
+    // Load latest data
+    setSyncState('syncing', 'Зареждане на графиците...');
+    bookingsData = await getBookedSlots();
+    setSyncState('ok', 'Всички данни са заредени');
+    
+    renderSlots();
+    
+    adminDateInput.addEventListener('change', renderSlots);
+  }
+
+  function setSyncState(state, text) {
+    syncText.textContent = text;
+    syncIndicator.className = 'sync-indicator';
+    if (state === 'syncing') {
+      syncIndicator.classList.add('syncing');
+    } else if (state === 'error') {
+      syncIndicator.classList.add('error');
+    }
+  }
+
+  function renderSlots() {
+    const selectedDate = adminDateInput.value;
+    if (!selectedDate) return;
+    
+    // Format heading
+    const parts = selectedDate.split('-');
+    dateHeading.textContent = `Часове за ${parts[2]}.${parts[1]}.${parts[0]} г.`;
+    
+    const bookedHoursForDate = bookingsData[selectedDate] || [];
+    slotsList.innerHTML = '';
+    
+    WORK_HOURS.forEach(slot => {
+      const isBooked = bookedHoursForDate.includes(slot);
+      
+      const row = document.createElement('div');
+      row.className = 'admin-slot-row';
+      
+      row.innerHTML = `
+        <div class="admin-slot-info">
+          <span class="admin-slot-time">${slot}</span>
+          <span class="admin-slot-badge ${isBooked ? 'busy' : 'free'}">${isBooked ? 'Зает' : 'Свободен'}</span>
+        </div>
+        <button class="admin-btn admin-btn-toggle ${isBooked ? 'active' : ''}">${isBooked ? 'Маркирай Свободен' : 'Маркирай Зает'}</button>
+      `;
+      
+      const toggleBtn = row.querySelector('.admin-btn');
+      toggleBtn.addEventListener('click', async () => {
+        toggleBtn.disabled = true;
+        setSyncState('syncing', 'Записване на промените...');
+        
+        if (isBooked) {
+          // Remove from busy slots
+          bookingsData[selectedDate] = bookedHoursForDate.filter(h => h !== slot);
+          if (bookingsData[selectedDate].length === 0) {
+            delete bookingsData[selectedDate];
+          }
+        } else {
+          // Add to busy slots
+          if (!bookingsData[selectedDate]) {
+            bookingsData[selectedDate] = [];
+          }
+          bookingsData[selectedDate].push(slot);
+        }
+        
+        // Sync with API
+        const success = await saveBookings(bookingsData);
+        if (success) {
+          setSyncState('ok', 'Промените са записани успешно!');
+        } else {
+          setSyncState('error', 'Грешка при синхронизация! Записано е локално.');
+        }
+        
+        renderSlots();
+      });
+      
+      slotsList.appendChild(row);
+    });
+  }
+
+  async function saveBookings(data) {
+    try {
+      const res = await fetch(BOOKING_API_URL, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error('PUT failed');
+      localStorage.setItem('avtomivka_blqsuk_bookings', JSON.stringify(data));
+      return true;
+    } catch (err) {
+      console.error('Error saving bookings to cloud storage:', err);
+      localStorage.setItem('avtomivka_blqsuk_bookings', JSON.stringify(data));
+      return false;
+    }
+  }
+</script>
+</body>
+</html>

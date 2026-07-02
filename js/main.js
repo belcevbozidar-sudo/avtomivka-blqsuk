@@ -142,7 +142,92 @@ const formNote = document.getElementById('form-note');
 if (form && formNote) {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    formNote.textContent = 'Благодарим! Запитването е изпратено. Ще се свържем с вас скоро.';
+    formNote.textContent = 'Благодарим! Вашето запитване/час беше изпратено успешно. Ще се свържем с вас скоро.';
     form.reset();
+    const timeSelects = form.querySelectorAll('#booking-time');
+    timeSelects.forEach(select => {
+      select.innerHTML = '<option value="" disabled selected>Изберете първо дата...</option>';
+    });
   });
 }
+
+/* ===== Booking Calendar Logic ===== */
+const BOOKING_API_URL = 'https://extendsclass.com/api/json-storage/bin/bfefdfb';
+const WORK_HOURS = [
+  "09:00 - 10:00",
+  "10:00 - 11:00",
+  "11:00 - 12:00",
+  "12:00 - 13:00",
+  "13:00 - 14:00",
+  "14:00 - 15:00",
+  "15:00 - 16:00",
+  "16:00 - 17:00",
+  "17:00 - 18:00"
+];
+
+async function getBookedSlots() {
+  try {
+    const res = await fetch(BOOKING_API_URL);
+    if (!res.ok) throw new Error('API request failed');
+    const data = await res.json();
+    localStorage.setItem('avtomivka_blqsuk_bookings', JSON.stringify(data));
+    return data;
+  } catch (err) {
+    console.warn('Booking API error, falling back to cached localStorage bookings:', err);
+    const cached = localStorage.getItem('avtomivka_blqsuk_bookings');
+    return cached ? JSON.parse(cached) : {};
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const dateInputs = document.querySelectorAll('#booking-date');
+  const timeSelects = document.querySelectorAll('#booking-time');
+  
+  if (dateInputs.length === 0) return;
+  
+  // Set min date to today's date
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  let mm = today.getMonth() + 1;
+  let dd = today.getDate();
+  if (mm < 10) mm = '0' + mm;
+  if (dd < 10) dd = '0' + dd;
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+  
+  dateInputs.forEach(input => {
+    input.min = todayStr;
+  });
+  
+  // Fetch latest bookings
+  const bookings = await getBookedSlots();
+  
+  // Bind change event to date inputs
+  dateInputs.forEach((dateInput, index) => {
+    const timeSelect = timeSelects[index];
+    if (!timeSelect) return;
+    
+    dateInput.addEventListener('change', () => {
+      const selectedDate = dateInput.value;
+      if (!selectedDate) {
+        timeSelect.innerHTML = '<option value="" disabled selected>Изберете първо дата...</option>';
+        return;
+      }
+      
+      const bookedHours = bookings[selectedDate] || [];
+      timeSelect.innerHTML = '<option value="" disabled selected>Изберете час...</option>';
+      
+      WORK_HOURS.forEach(slot => {
+        const isBooked = bookedHours.includes(slot);
+        const option = document.createElement('option');
+        option.value = slot;
+        if (isBooked) {
+          option.disabled = true;
+          option.textContent = `${slot} (зает)`;
+        } else {
+          option.textContent = slot;
+        }
+        timeSelect.appendChild(option);
+      });
+    });
+  });
+});

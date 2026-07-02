@@ -104,9 +104,21 @@
           Email
           <input type="email" name="email" placeholder="example@email.com">
         </label>
+        <div class="booking-date-time">
+          <label>
+            Дата на посещение
+            <input type="date" id="booking-date" name="booking-date" required>
+          </label>
+          <label>
+            Желан час
+            <select id="booking-time" name="booking-time" required>
+              <option value="" disabled selected>Изберете първо дата...</option>
+            </select>
+          </label>
+        </div>
         <label>
           Съобщение
-          <textarea name="message" rows="4" placeholder="Адрес и предпочитан час за измиване..." required></textarea>
+          <textarea name="message" rows="4" placeholder="Адрес за измиване и допълнителни детайли..." required></textarea>
         </label>
         <button type="submit" class="btn btn-primary btn-block">Изпрати запитване</button>
         <p class="form-note" id="form-note"></p>

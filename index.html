@@ -118,6 +118,40 @@
   </div>
 </section>
 
+<!-- CORPORATE CLIENTS SECTION -->
+<section class="section" id="corporate">
+  <div class="container corporate-grid">
+    <div class="corporate-content">
+      <span class="kicker">Корпоративни Партньори</span>
+      <h2>Услуги за Корпоративни Клиенти</h2>
+      <p>Автомивка Блясък е перфектният партньор за поддръжка на Вашия служебен автопарк. Отличаваме се с широк спектър от професионални услуги, мобилно почистване на адрес и гъвкави детайлинг решения.</p>
+      
+      <div class="corporate-features">
+        <div class="corp-feature-item">
+          <strong>🚗 Пълен спектър от услуги</strong>
+          <p>Почистваме всичко — от леки автомобили и бусове до тежкотоварни камиони и ТИР-ове.</p>
+        </div>
+        <div class="corp-feature-item">
+          <strong>🤝 Работа с договори и преференциални цени</strong>
+          <p>Вече работим успешно с над 35 корпоративни клиенти при дългосрочни договори и преференциални ценови условия.</p>
+        </div>
+        <div class="corp-feature-item">
+          <strong>🧾 Гъвкаво фактуриране и предимство</strong>
+          <p>Издаване на фактури за всички услуги, бързо обслужване с предимство и специално отношение.</p>
+        </div>
+      </div>
+      
+      <div style="margin-top: 32px;">
+        <a href="contacts.html" class="btn btn-primary btn-lg">Свържете се с нас за оферта</a>
+      </div>
+    </div>
+    
+    <div class="corporate-image-container">
+      <img src="images/corporate-clients.jpg" alt="Корпоративно почистване на камиони и фирмени автомобили" class="corporate-img" loading="lazy">
+    </div>
+  </div>
+</section>
+
 <!-- PRICES PREVIEW -->
 <section class="section section-alt" id="prices-preview">
   <div class="container">
@@ -216,9 +250,21 @@
         Email
         <input type="email" name="email" placeholder="example@email.com">
       </label>
+      <div class="booking-date-time">
+        <label>
+          Дата на посещение
+          <input type="date" id="booking-date" name="booking-date" required>
+        </label>
+        <label>
+          Желан час
+          <select id="booking-time" name="booking-time" required>
+            <option value="" disabled selected>Изберете първо дата...</option>
+          </select>
+        </label>
+      </div>
       <label>
         Съобщение
-        <textarea name="message" rows="4" placeholder="Разкажете ни какво ви трябва..." required></textarea>
+        <textarea name="message" rows="4" placeholder="Допълнителни детайли за услугата..." required></textarea>
       </label>
       <button type="submit" class="btn btn-primary btn-block">Изпрати запитване</button>
       <p class="form-note" id="form-note"></p>
