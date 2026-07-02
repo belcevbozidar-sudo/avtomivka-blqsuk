@@ -278,6 +278,12 @@ if (form && formNote) {
     
     form.reset();
     
+    // Clear custom datepicker inputs
+    const displayInputs = form.querySelectorAll('.custom-datepicker-input');
+    displayInputs.forEach(dispInput => {
+      dispInput.value = '';
+    });
+    
     if (timeSelect) {
       timeSelect.innerHTML = '<option value="" disabled selected>Изберете първо дата...</option>';
     }
@@ -313,6 +319,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Fetch latest bookings
   const bookings = await getBookedSlots();
   
+  // Bulgarian months and weekdays
+  const BG_MONTHS = [
+    "Януари", "Февруари", "Март", "Април", "Май", "Юни",
+    "Юли", "Август", "Септември", "Октомври", "Ноември", "Декември"
+  ];
+  const BG_WEEKDAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+  
   // Bind change event to date inputs
   dateInputs.forEach((dateInput, index) => {
     const timeSelect = timeSelects[index];
@@ -333,6 +346,159 @@ document.addEventListener('DOMContentLoaded', async () => {
       dateTimeRow.parentNode.insertBefore(container, dateTimeRow.nextSibling);
     }
     
+    // ===== HIDE NATIVE INPUT & CREATE CUSTOM DATEPICKER =====
+    dateInput.style.display = 'none';
+    
+    const pickerWrapper = document.createElement('div');
+    pickerWrapper.className = 'custom-datepicker-wrapper';
+    
+    const displayInput = document.createElement('input');
+    displayInput.type = 'text';
+    displayInput.className = 'custom-datepicker-input';
+    displayInput.readOnly = true;
+    displayInput.placeholder = 'Изберете дата на посещение...';
+    displayInput.required = true;
+    
+    const calendarDropdown = document.createElement('div');
+    calendarDropdown.className = 'custom-datepicker-calendar';
+    calendarDropdown.style.display = 'none';
+    
+    pickerWrapper.appendChild(displayInput);
+    pickerWrapper.appendChild(calendarDropdown);
+    dateInput.parentNode.appendChild(pickerWrapper);
+    
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
+    let selectedDateVal = '';
+    
+    // Toggle calendar on click
+    displayInput.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.custom-datepicker-calendar').forEach(c => {
+        if (c !== calendarDropdown) c.style.display = 'none';
+      });
+      calendarDropdown.style.display = calendarDropdown.style.display === 'none' ? 'block' : 'none';
+      renderCalendar();
+    });
+    
+    // Close calendar on click outside
+    document.addEventListener('click', (e) => {
+      if (!pickerWrapper.contains(e.target)) {
+        calendarDropdown.style.display = 'none';
+      }
+    });
+    
+    function renderCalendar() {
+      calendarDropdown.innerHTML = '';
+      
+      // Header: month navigation
+      const header = document.createElement('div');
+      header.className = 'calendar-header';
+      
+      const prevBtn = document.createElement('button');
+      prevBtn.className = 'calendar-nav-btn';
+      prevBtn.type = 'button';
+      prevBtn.innerHTML = '&#9664;';
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+        renderCalendar();
+      });
+      
+      const nextBtn = document.createElement('button');
+      nextBtn.className = 'calendar-nav-btn';
+      nextBtn.type = 'button';
+      nextBtn.innerHTML = '&#9654;';
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        renderCalendar();
+      });
+      
+      const title = document.createElement('span');
+      title.className = 'calendar-title';
+      title.textContent = `${BG_MONTHS[currentMonth]} ${currentYear} г.`;
+      
+      header.appendChild(prevBtn);
+      header.appendChild(title);
+      header.appendChild(nextBtn);
+      calendarDropdown.appendChild(header);
+      
+      // Weekdays headers
+      const weekdaysRow = document.createElement('div');
+      weekdaysRow.className = 'calendar-weekdays';
+      BG_WEEKDAYS.forEach(w => {
+        const span = document.createElement('span');
+        span.textContent = w;
+        weekdaysRow.appendChild(span);
+      });
+      calendarDropdown.appendChild(weekdaysRow);
+      
+      // Days grid
+      const daysGrid = document.createElement('div');
+      daysGrid.className = 'calendar-days';
+      
+      const firstDay = new Date(currentYear, currentMonth, 1);
+      let startDayIdx = firstDay.getDay();
+      startDayIdx = startDayIdx === 0 ? 6 : startDayIdx - 1;
+      
+      const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+      
+      // Pad empty cells before the first day of month
+      for (let i = 0; i < startDayIdx; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.className = 'calendar-day empty';
+        daysGrid.appendChild(emptyCell);
+      }
+      
+      const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      
+      for (let d = 1; d <= totalDays; d++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'calendar-day';
+        dayCell.textContent = d;
+        
+        const cellDateOnly = new Date(currentYear, currentMonth, d);
+        const isPast = cellDateOnly < todayDateOnly;
+        
+        const yyyySlot = currentYear;
+        const mmSlot = currentMonth + 1 < 10 ? '0' + (currentMonth + 1) : currentMonth + 1;
+        const ddSlot = d < 10 ? '0' + d : d;
+        const dateStr = `${yyyySlot}-${mmSlot}-${ddSlot}`;
+        
+        if (isPast) {
+          dayCell.classList.add('disabled');
+        } else {
+          dayCell.classList.add('free-day');
+          if (dateStr === selectedDateVal) {
+            dayCell.classList.add('selected-day');
+          }
+          
+          dayCell.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selectedDateVal = dateStr;
+            displayInput.value = `${ddSlot}.${mmSlot}.${yyyySlot} г.`;
+            
+            // Sync with hidden date input
+            dateInput.value = dateStr;
+            dateInput.dispatchEvent(new Event('change'));
+            
+            calendarDropdown.style.display = 'none';
+          });
+        }
+        daysGrid.appendChild(dayCell);
+      }
+      calendarDropdown.appendChild(daysGrid);
+    }
+    
     dateInput.addEventListener('change', () => {
       const selectedDate = dateInput.value;
       if (!selectedDate) {
@@ -351,7 +517,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       WORK_HOURS.forEach(slot => {
         const isBooked = bookedHours[slot] !== undefined;
         
-        // Populate option element
+        // Populate hidden option
         const option = document.createElement('option');
         option.value = slot;
         if (isBooked) {
@@ -373,11 +539,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           pill.classList.add('free');
           pill.textContent = slot;
           pill.addEventListener('click', () => {
-            // Deselect other pills
             grid.querySelectorAll('.slot-pill').forEach(p => p.classList.remove('selected'));
-            // Highlight current pill
             pill.classList.add('selected');
-            // Sync to select dropdown value
             timeSelect.value = slot;
           });
         }
@@ -385,7 +548,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
 
-    // Sync select dropdown changes to visual pills
+    // Sync select changes to visual pills
     timeSelect.addEventListener('change', () => {
       const selectedVal = timeSelect.value;
       const pills = container.querySelectorAll('.slot-pill');
