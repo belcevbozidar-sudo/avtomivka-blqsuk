@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Успешна Резервация — Автомивка Блясък</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="images/favicon.png">
+<style>
+  .success-container {
+    max-width: 500px;
+    margin: 120px auto;
+    padding: 40px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+    box-sizing: border-box;
+    animation: fadeIn 0.4s ease;
+  }
+  
+  /* Animated Checkmark SVG */
+  .checkmark-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 30px;
+  }
+  .checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #10b981; /* Tailwind emerald-500 */
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #10b981;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+  }
+  .checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #10b981;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+  }
+  .checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke: #fff;
+    stroke-width: 3;
+    fill: none;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+  }
+
+  @keyframes stroke {
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes scale {
+    0%, 100% {
+      transform: none;
+    }
+    50% {
+      transform: scale3d(1.1, 1.1, 1);
+    }
+  }
+  @keyframes fill {
+    100% {
+      box-shadow: inset 0px 0px 0px 40px #10b981;
+    }
+  }
+
+  .success-container h1 {
+    font-family: var(--ff-display);
+    font-size: 1.8rem;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .success-container p {
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-bottom: 30px;
+    font-size: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="noise-overlay" aria-hidden="true"></div>
+
+<!-- HEADER -->
+<header class="site-header site-header-subpage" id="header">
+  <div class="container header-inner">
+    <a href="index.html" class="brand">
+      <img src="images/logo.png" alt="Автомивка Блясък" class="brand-logo">
+    </a>
+
+    <nav class="main-nav" id="main-nav">
+      <a href="index.html">Начало</a>
+      <a href="prices.html">Цени и услуги</a>
+      <a href="mobile-wash.html">Мобилна автомивка</a>
+      <a href="car-pickup.html">Взимане от адрес</a>
+      <a href="gallery.html">Галерия</a>
+      <a href="contacts.html">Контакти</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="tel:+359886572410" class="header-phone">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 5C3 3.89 3.89 3 5 3H8.28C8.76 3 9.18 3.32 9.31 3.78L10.5 7.8C10.61 8.18 10.49 8.59 10.2 8.86L8.1 10.83C9.21 13.18 10.82 14.79 13.17 15.9L15.14 13.8C15.41 13.51 15.82 13.39 16.2 13.5L20.22 14.69C20.68 14.82 21 15.24 21 15.72V19C21 20.11 20.11 21 19 21H17C9.27 21 3 14.73 3 7V5Z" stroke="currentColor" stroke-width="1.6"/></svg>
+        +359 88 657 2410
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Меню">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="container" style="padding-top: 40px;">
+  <div class="success-container">
+    <div class="checkmark-wrapper">
+      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+        <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
+    </div>
+    <h1>Благодарим Ви!</h1>
+    <p>Часът / запитването Ви беше изпратено успешно.<br>Ще се свържем с Вас съвсем скоро за потвърждение.</p>
+    <a href="index.html" class="btn btn-primary" style="display: inline-block;">Назад към началото</a>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

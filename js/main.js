@@ -182,6 +182,14 @@ async function saveBookingsToServer(data) {
   }
 }
 
+function encodeNtfyHeader(str) {
+  try {
+    return '=?utf-8?B?' + btoa(unescape(encodeURIComponent(str))) + '?=';
+  } catch (e) {
+    return str;
+  }
+}
+
 function sendNtfyAlert(name, phone, email, date, time, message) {
   const topic = 'avtomivka_blqsuk_alerts';
   const url = `https://ntfy.sh/${topic}`;
@@ -199,7 +207,7 @@ function sendNtfyAlert(name, phone, email, date, time, message) {
     method: 'POST',
     body: text,
     headers: {
-      'Title': date && time ? 'Нова Резервация за Час! 🚗✨' : 'Ново съобщение от сайта! ✉️',
+      'Title': encodeNtfyHeader(date && time ? 'Нова Резервация за Час! 🚗✨' : 'Ново съобщение от сайта! ✉️'),
       'Priority': 'high',
       'Tags': date && time ? 'car,calendar_spiral' : 'incoming_envelope,bell'
     }
@@ -212,6 +220,14 @@ const formNote = document.getElementById('form-note');
 if (form && formNote) {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalBtnHtml = submitBtn ? submitBtn.innerHTML : 'Изпрати';
+    
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `Обработка... <span class="btn-spinner"></span>`;
+    }
     
     // Get form field values
     const nameVal = form.querySelector('[name="name"]').value;
@@ -240,6 +256,10 @@ if (form && formNote) {
         if (bookings[selectedDate][selectedTime]) {
           formNote.style.color = '#ff4a4a';
           formNote.textContent = 'Този час току-що беше зает! Моля, изберете друг час.';
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHtml;
+          }
           return;
         }
         
@@ -257,43 +277,34 @@ if (form && formNote) {
         if (!success) {
           formNote.style.color = '#ff4a4a';
           formNote.textContent = 'Грешка при връзката с календара. Моля, опитайте отново или се обадете по телефона.';
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHtml;
+          }
           return;
         }
         
         // Send alert
         sendNtfyAlert(nameVal, phoneVal, emailVal, selectedDate, selectedTime, messageVal);
-        formNote.textContent = 'Благодарим! Часът Ви беше запазен успешно. Ще се свържем с Вас за потвърждение.';
+        
+        // Redirect to success page
+        window.location.href = 'success.html';
         
       } catch (err) {
         console.error('Error during reservation:', err);
         formNote.style.color = '#ff4a4a';
         formNote.textContent = 'Грешка при резервация. Моля, опитайте отново.';
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHtml;
+        }
         return;
       }
     } else {
       // It's a general inquiry
       sendNtfyAlert(nameVal, phoneVal, emailVal, '', '', messageVal);
-      formNote.textContent = 'Благодарим! Запитването е изпратено успешно. Ще се свържем с Вас скоро.';
+      window.location.href = 'success.html';
     }
-    
-    form.reset();
-    
-    // Clear custom datepicker inputs
-    const displayInputs = form.querySelectorAll('.custom-datepicker-input');
-    displayInputs.forEach(dispInput => {
-      dispInput.value = '';
-    });
-    
-    if (timeSelect) {
-      timeSelect.innerHTML = '<option value="" disabled selected>Изберете първо дата...</option>';
-    }
-    
-    const gridContainers = document.querySelectorAll('.booking-slots-container');
-    gridContainers.forEach(container => {
-      container.style.display = 'none';
-      const grid = container.querySelector('.booking-slots-grid');
-      if (grid) grid.innerHTML = '';
-    });
   });
 }
 
