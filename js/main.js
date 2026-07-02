@@ -144,9 +144,17 @@ if (form && formNote) {
     e.preventDefault();
     formNote.textContent = 'Благодарим! Вашето запитване/час беше изпратено успешно. Ще се свържем с вас скоро.';
     form.reset();
+    
     const timeSelects = form.querySelectorAll('#booking-time');
     timeSelects.forEach(select => {
       select.innerHTML = '<option value="" disabled selected>Изберете първо дата...</option>';
+    });
+
+    const gridContainers = document.querySelectorAll('.booking-slots-container');
+    gridContainers.forEach(container => {
+      container.style.display = 'none';
+      const grid = container.querySelector('.booking-slots-grid');
+      if (grid) grid.innerHTML = '';
     });
   });
 }
@@ -206,9 +214,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     const timeSelect = timeSelects[index];
     if (!timeSelect) return;
     
+    // Create visual grid container dynamically
+    const container = document.createElement('div');
+    container.className = 'booking-slots-container';
+    container.style.display = 'none';
+    container.innerHTML = `
+      <div class="booking-slots-title">Наличност на часове за деня (изберете час):</div>
+      <div class="booking-slots-grid"></div>
+    `;
+    
+    // Insert after the parent .booking-date-time container
+    const dateTimeRow = dateInput.closest('.booking-date-time');
+    if (dateTimeRow) {
+      dateTimeRow.parentNode.insertBefore(container, dateTimeRow.nextSibling);
+    }
+    
     dateInput.addEventListener('change', () => {
       const selectedDate = dateInput.value;
       if (!selectedDate) {
+        container.style.display = 'none';
         timeSelect.innerHTML = '<option value="" disabled selected>Изберете първо дата...</option>';
         return;
       }
@@ -216,8 +240,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       const bookedHours = bookings[selectedDate] || [];
       timeSelect.innerHTML = '<option value="" disabled selected>Изберете час...</option>';
       
+      const grid = container.querySelector('.booking-slots-grid');
+      grid.innerHTML = '';
+      container.style.display = 'block';
+      
       WORK_HOURS.forEach(slot => {
         const isBooked = bookedHours.includes(slot);
+        
+        // Populate option element
         const option = document.createElement('option');
         option.value = slot;
         if (isBooked) {
@@ -227,6 +257,40 @@ document.addEventListener('DOMContentLoaded', async () => {
           option.textContent = slot;
         }
         timeSelect.appendChild(option);
+        
+        // Populate visual pill
+        const pill = document.createElement('div');
+        pill.className = 'slot-pill';
+        if (isBooked) {
+          pill.classList.add('busy');
+          pill.textContent = slot;
+          pill.title = 'Този час е зает';
+        } else {
+          pill.classList.add('free');
+          pill.textContent = slot;
+          pill.addEventListener('click', () => {
+            // Deselect other pills
+            grid.querySelectorAll('.slot-pill').forEach(p => p.classList.remove('selected'));
+            // Highlight current pill
+            pill.classList.add('selected');
+            // Sync to select dropdown value
+            timeSelect.value = slot;
+          });
+        }
+        grid.appendChild(pill);
+      });
+    });
+
+    // Sync select dropdown changes to visual pills
+    timeSelect.addEventListener('change', () => {
+      const selectedVal = timeSelect.value;
+      const pills = container.querySelectorAll('.slot-pill');
+      pills.forEach(p => {
+        if (p.textContent === selectedVal) {
+          p.classList.add('selected');
+        } else {
+          p.classList.remove('selected');
+        }
       });
     });
   });
